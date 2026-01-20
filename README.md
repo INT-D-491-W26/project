@@ -1,2 +1,17 @@
 # project
 Credit Card Transactions Fraud Detection Project
+
+| Name        | Email               |
+| ----------- | ------------------- |
+| Krystal Kim | jueun2@ualberta.ca  |
+| Gurkeerat Kakar | gskakar@ualberta.ca  |
+| Tyrone Bougiridis | tbougiri@ualberta.ca  |
+| Mohammed Ishfaq Mostain | mostain@ualberta.ca  |
+| Elizabeth Seto | lseto1@ualberta.ca  |
+| Reuben John | rjjohn1@ualberta.ca  |
+
+Google Docs:
+https://docs.google.com/document/d/1UXUUHw-BwKlK2hhJHYG3vgFuDvgmFvdMPgCbW6jjTPA/edit?usp=sharing 
+
+Dataset:
+https://github.com/namebrandon/Sparkov_Data_Generation 

@@ -15,3 +15,5 @@ https://docs.google.com/document/d/1UXUUHw-BwKlK2hhJHYG3vgFuDvgmFvdMPgCbW6jjTPA/
 
 Dataset:
 https://github.com/namebrandon/Sparkov_Data_Generation 
+
+Proposal Presentation Slides: https://docs.google.com/presentation/d/1PLg_hWNRepACWU3XMDVJvzBVoMKmpuuc1Kk0PdXcjSE/edit?usp=sharing

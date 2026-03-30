@@ -1,3 +1,9 @@
+data/
+**/data/
+datasets/
+**/*.csv
+cleaned_data_files/
+
 cleaned_data_files/
 data/
 datasets/
@@ -9,6 +15,7 @@ models/
 notebooks/
 src/
 tempaltes2/
+
 
 model.joblib
 thresholds_xgb.json
@@ -43,6 +50,7 @@ logs/
 *.png
 *.jpg
 *.jpeg
+*.pdf
 
 Makefile
 LICENSE

@@ -71,13 +71,6 @@ Additionally the following features were engineered:
 - `cust_amt_mean`: Amount the customer spends on average.
 - `amt_dev_from_mean`: Deviation of trenasction fom what the cutomer spends on average.
 
----
-
-## References
--
-
----
-
 ## License
 
 See the LICENSE file for the project’s licensing details.

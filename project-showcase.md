@@ -76,10 +76,13 @@ obtains predictive scores from the hosted backend so what you see in the browser
 the deployed inference path.
 
 ## How to run
-Open the demo link below to use the live application. Move through descriptive and
-diagnostic views, then open the predictive experience. Fraud scores there are returned
-from the Render-hosted inference service. Use the repository link for the team’s source
-materials if you need to set up a local environment or dig into technical detail.
+1. Clone `https://github.com/INT-D-491-W26/project`.
+2. Install Python dependencies with `pip3 install -r requirements.txt`.
+3. Run `python -m modelling.main` to train all four models.
+4. Run `python train_and_save.py` to export XGBoost and write `model.joblib`.
+5. Run `python app.py` after `model.joblib` exists to start the local Flask app.
+6. For the hosted stack only, use the Demo and Predictive API URLs under Links (Vercel
+   UI plus Render inference).
 
 ## Links
 - Repository: https://github.com/INT-D-491-W26/project

@@ -18,74 +18,68 @@ repo_url: https://github.com/INT-D-491-W26/project
 demo_url: https://intd-w26-project.vercel.app/
 poster_image: /assets/images/projects/2026-winter/credit-card-fraud-detection-poster.svg
 group_image: /assets/images/projects/2026-winter/credit-card-fraud-detection-group.svg
-short_abstract: Sparkov-simulated transactions, engineered features, and four binary
-  classifiers in one sklearn pipeline (logistic regression, Random Forest, AdaBoost,
-  XGBoost). Class weights and scale_pos_weight handle imbalance. XGBoost is exported for
-  serving. Metrics include recall, precision, F1, ROC-AUC, PR-AUC, plus threshold and
-  cost-based analysis. UI on Vercel, live `/predictive` inference on Render.
+short_abstract: This project uses simulated credit card transactions from the Sparkov
+  generator, adds engineered features, and compares several supervised classifiers for
+  binary fraud detection under extreme imbalance. Approaches include logistic
+  regression, Random Forest, AdaBoost, and gradient boosting with imbalance-aware
+  training. Evaluation emphasizes recall, precision, F1, ROC-AUC, and PR-AUC, together
+  with threshold and cost-based analysis when false negatives are more expensive than
+  false positives. The public interface is hosted on Vercel, and live fraud scoring for
+  the predictive experience runs on a dedicated backend service on Render.
 ---
 ## Problem
-Many fraud projects stop at offline metrics or keep deployment out of sight. This
-work was built to follow a single thread from data and exploration through trained
-models to something you can show in a browser. Fraud is extremely rare compared with
-legitimate transactions, so accuracy alone can look strong while the model catches
-almost no fraud. The real question is how to learn under imbalance, measure recall and
-precision honestly, and turn probability scores into thresholds and policies when a
-missed fraud and a false alarm do not cost the same.
+Many fraud analytics efforts stop at offline metrics or never connect models to anything
+visitors can use. This project follows one path from prepared data and exploratory
+views through trained models to a public demo. Fraud is extremely rare next to normal
+traffic, so accuracy alone can look strong while the system catches almost no fraud.
+The work focuses on learning under imbalance, measuring recall and precision honestly,
+and relating model scores to thresholds and policies when missed fraud and false alarms
+carry different costs.
 
 ## Data
-The app draws on synthetic credit card transactions from the Sparkov Data Generation
-pipeline. Rows include amount, merchant category, geography, demographics, timestamps,
-and a binary `is_fraud` label, with interpretable fields rather than PCA-obscured
-features. The team loads cleaned CSVs into `cleaned_data_files/`, removes identifiers
-that should not appear in modelling, and engineers Haversine distance between customer
-and merchant, customer spending versus historical average, and calendar features from
-`trans_datetime`. The consolidated data used in the report is large and highly
-imbalanced, which mirrors the needle-in-a-haystack setting fraud systems face in
-practice.
+Transactions are simulated with the Sparkov Data Generation tool, which yields
+interpretable attributes rather than anonymized principal components. Each transaction
+includes amount, merchant category, geography, demographics, time information, and a
+fraud indicator. Sensitive identifiers are removed before modelling. Engineered inputs
+include distance between customer and merchant, spending relative to the customer’s
+typical behaviour, and calendar features from the transaction time. The full
+consolidated dataset is large and highly imbalanced, which reflects the needle-in-a-haystack
+challenge that real fraud systems face.
 
 ## Method
-Modelling uses a unified sklearn `Pipeline` for everyone: numeric features are scaled,
-categoricals are one-hot encoded with unknown categories ignored at prediction time,
-and the train-test split is stratified so fraud remains rare but present in both
-partitions. Four supervised binary classifiers share that preprocessing: logistic
-regression as a linear baseline, then Random Forest, AdaBoost, and XGBoost for
-non-linear structure. Class imbalance is handled with class weights on sklearn
-estimators and with `scale_pos_weight` on XGBoost derived from training counts.
+All models share the same preprocessing and evaluation design. Numeric inputs are
+scaled, categorical fields are encoded with rules for unseen categories at prediction
+time, and the data are split so that both training and evaluation sets keep the same
+rare fraud rate. The team compares a linear baseline with ensemble methods: random
+forests, adaptive boosting, and gradient-boosted decision trees, using class weighting
+and related techniques so the minority fraud class is not ignored during training.
 
-After fitting, the training code selects a classification threshold on the training
-split to maximize F1, then evaluates on the holdout set at that operating point. The
-team also reports recall, precision, F1, ROC-AUC, and PR-AUC, and studies cost-weighted
-thresholds where false negatives are penalized more heavily than false positives.
-XGBoost is the model exported for serving. The repository includes `train_and_save.py`
-to write `model.joblib`, and a small Flask app (`app.py`) can load that artifact for
-local approve, review, or block style rules.
+Models are assessed on held-out data using confusion-based metrics, the area under the
+ROC and precision–recall curves, and analyses that vary the decision threshold. A
+separate cost-style view gives higher weight to false negatives than to false positives,
+which matches the intuition that undetected fraud is often more damaging than extra
+review of legitimate transactions. The strongest boosted model is used for deployment.
 
-The public interface is deployed on Vercel. The predictive experience does not run
-inference inside the edge UI. Instead the front end calls a Python service on Render
-at `/predictive`, which keeps training and batch evaluation in this repo while the live
-demo matches a realistic split between a static site and a long-running ML API.
+The user-facing experience is hosted on Vercel. Fraud scoring for the interactive
+predictive section is not executed in the browser. It is provided by a Python
+inference service on Render, which keeps heavy model work on a backend built for that
+purpose.
 
 ## Results
-The outcome is an end-to-end story you can walk through in the demo: descriptive and
-diagnostic views for context, then live fraud scores from the same family of models
-documented here. Reported metrics depend on which cleaned files and hyperparameters you
-use, but training runs leave traces under `outputs/run-logs/` for reproducibility. The
-written report connects model behaviour to the domain, including higher fraud amounts,
-online categories, and late-night patterns. Taken together, the project shows how
-imbalance-aware training, careful metrics, and deployment choices fit the same problem
-definition from the introduction through to prescriptive policy.
+The deliverable is an end-to-end story: descriptive and diagnostic views for context,
+then live fraud risk scores in the predictive flow, and prescriptive framing informed
+by the same modelling ideas. Quantitative performance depends on data scope and modelling
+choices. Exploratory work in the project aligns with the trained models on several
+patterns, including higher typical fraud amounts, stronger risk in certain online
+merchant categories, and elevated fraud rates during late-night hours. The online demo
+obtains predictive scores from the hosted backend so what you see in the browser matches
+the deployed inference path.
 
 ## How to run
-1. Clone `https://github.com/INT-D-491-W26/project`.
-2. Place cleaned CSV files under `cleaned_data_files/` (see README and
-   `491_cleaning.py` for the schema).
-3. Install Python dependencies with `pip3 install -r requirements.txt`.
-4. Run `python -m modelling.main` to train all four models.
-5. Run `python train_and_save.py` to export XGBoost and write `model.joblib`.
-6. Run `python app.py` after `model.joblib` exists to start the local Flask app.
-7. For the hosted stack only, use the Demo and Predictive API URLs under Links (Vercel
-   UI plus Render inference).
+Open the demo link below to use the live application. Move through descriptive and
+diagnostic views, then open the predictive experience. Fraud scores there are returned
+from the Render-hosted inference service. Use the repository link for the team’s source
+materials if you need to set up a local environment or dig into technical detail.
 
 ## Links
 - Repository: https://github.com/INT-D-491-W26/project

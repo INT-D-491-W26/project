@@ -16,7 +16,7 @@ tags:
 - XGBoost
 repo_url: https://github.com/INT-D-491-W26/project
 demo_url: https://intd-w26-project.vercel.app/
-poster_image: /assets/images/projects/2026-winter/credit-card-fraud-detection-poster.svg
+poster_image: https://intd-w26-project.vercel.app/static/images/showcase-poster.png
 group_image: /assets/images/projects/2026-winter/credit-card-fraud-detection-group.svg
 short_abstract: This project uses simulated credit card transactions from the Sparkov
   generator, adds engineered features, and compares several supervised classifiers for
